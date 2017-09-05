@@ -1,0 +1,12 @@
+echo writeFile = open^("chidraqul2_format.txt", "w"^);
+echo with open^("code_format.py", "r"^) as ins:
+echo 	for line in ins:
+echo 			suffixLine = "echo " + line;
+echo 			escLine0 = suffixLine.replace^("^^","^^^^"^);
+echo 			escLine1 = escLine0.replace^("^(","^^^("^);
+echo 			escLine2 = escLine1.replace^("^)","^^^)"^);
+echo 			escLine3 = escLine2.replace^("^<","^^^<"^);
+echo 			escLine4 = escLine3.replace^("^>","^^^>"^);
+echo 			escLine5 = escLine4.replace^("%%","%%%%"^);
+echo 			writeFile.write^(escLine5^);
+echo writeFile.close^(^);
