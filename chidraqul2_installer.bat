@@ -67,6 +67,22 @@ echo if not exist "%%cdir%%\chidraqul2_world3.bat" ^(
 echo echo Error opening chidraqul2_world3
 echo goto failed 
 echo ^)
+echo if not exist "%%cdir%%\changelog\changelog_size.txt" ^(
+echo echo Error loading changelog size
+echo echo press any key to continue to main menu
+echo pause ^>nul
+echo goto main
+echo ^)
+echo set /p pages=^<%%cdir%%\changelog\changelog_size.txt
+echo set /a page=0
+echo call :print_changelog
+echo :changelog
+echo choice /c wseq /n ^>nul
+echo if %%errorlevel%%==1 call :page_up
+echo if %%errorlevel%%==2 call :page_down
+echo if %%errorlevel%%==3 goto main
+echo if %%errorlevel%%==4 goto main
+echo goto changelog
 echo :main
 echo cls
 echo if %%select_world%%==2 ^(
@@ -90,6 +106,7 @@ echo if %%errorlevel%%==2 set select_world=3
 echo if %%errorlevel%%==3 goto start
 echo if %%errorlevel%%==4 exit
 echo goto main
+echo exit /b 0
 echo :start
 echo if %%select_world%%==2 ^(
 echo cls
@@ -100,6 +117,7 @@ echo cls
 echo call C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\chidraqul2_world3.bat
 echo exit
 echo ^)
+echo exit /b 0
 echo :failed
 echo echo ################################
 echo echo Failed loading chidraqul2.
@@ -108,6 +126,26 @@ echo echo skype: BloodWork131
 echo echo mail: chillerdragon@gmail.com
 echo echo ################################
 echo pause ^>nul
+echo exit /b 0
+echo :page_down
+echo if %%page%% gtr 0 ^( set /a page=%%page%%-1 ^)
+echo call :print_changelog
+echo exit /b 0
+echo :page_up
+echo if %%page%% lss %%pages%% ^( set /a page=%%page%%+1 ^)
+echo call :print_changelog
+echo exit /b 0
+echo :print_changelog
+echo cls
+echo echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo echo          CHIDRAQUL2
+echo echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo echo 'w' and 's' to change page 'e' start
+echo echo page %%page%%/%%pages%%
+echo echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo type %%cdir%%\changelog\changelog%%page%%.txt
+echo exit /b 0
+
 ) >chidraqul2.bat
 exit /b 0
 
@@ -136,19 +174,6 @@ echo set i=0
 echo set hp_price=10
 echo set has_skin_at=0
 echo set /a goldpos=%%random%% %%%%10 + 1
-echo echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-echo echo          CHIDRAQUL2
-echo echo            ADVENTURE
-echo echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-echo echo v. 0.0.1 alpha
-echo echo.
-echo echo CHANGELOG:
-echo echo v.0.0.1 alpha
-echo echo + added a changelog
-echo echo + added data save
-echo echo + added accounts
-echo pause ^> NUL
-echo cls
 echo :account_login
 echo set /p chidraqul_account="Account name ^(One word without spaces^): "
 echo if not exist C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\accounts\%%chidraqul_account%%\user_data_int.txt goto no_saves_int
@@ -423,19 +448,6 @@ echo set i=0
 echo set hp_price=10
 echo set has_skin_at=0
 echo set /a goldpos=%%random%% %%%%10 + 1
-echo echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-echo echo          CHIDRAQUL2
-echo echo            ADVENTURE
-echo echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-echo echo v. 0.0.1 alpha
-echo echo.
-echo echo CHANGELOG:
-echo echo v.0.0.1 alpha
-echo echo + added a changelog
-echo echo + added data save
-echo echo + added accounts
-echo pause ^> NUL
-echo cls
 echo :account_login
 echo set /p chidraqul_account="Account name ^(One word without spaces^): "
 echo if not exist C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\accounts\%%chidraqul_account%%\user_data_int.txt goto no_saves_int
@@ -722,41 +734,6 @@ echo set has_skin_at=0
 echo set render_dist=5
 echo set /a goldpos=%%random%% %%%%10 + 1
 echo set /a goldposY=%%random%% %%%%2
-echo set changelog_page=0
-echo set changelog_pages=2
-echo :changelog
-echo cls
-echo echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-echo echo          CHIDRAQUL2
-echo echo            v.0.0.5
-echo echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-echo echo 'w' and  's' to change page 'e' start
-echo echo page %%changelog_page%%/%%changelog_pages%%
-echo echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-echo if %%changelog_page%%==0 ^(
-echo echo coming soon...
-echo ^) else if %%changelog_page%%==1 ^(
-echo echo v.0.0.5 alpha
-echo echo * improved changelog
-echo echo + added installer
-echo echo + added launcher
-echo echo + added new worlds
-echo ^) else if %%changelog_page%%==2 ^(
-echo echo v.0.0.1 alpha
-echo echo + added a changelog
-echo echo + added data save
-echo echo + added accounts
-echo ^) else ^(
-echo echo unknow page.
-echo ^)
-echo choice /c swqe /n ^>nul
-echo if %%errorlevel%%==1 set /a changelog_page+=1
-echo if %%errorlevel%%==2 set /a changelog_page-=1
-echo if %%errorlevel%%==3 goto account_login
-echo if %%errorlevel%%==4 goto account_login
-echo if %%changelog_page%% lss 0 set changelog_page=0
-echo if %%changelog_page%% gtr %%changelog_pages%% set changelog_page=%%changelog_pages%%
-echo goto changelog
 echo :account_login
 echo cls
 echo set /p chidraqul_account="Account name ^(One word without spaces^): "

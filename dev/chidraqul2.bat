@@ -73,14 +73,17 @@ echo mail: chillerdragon@gmail.com
 echo ################################
 pause >nul
 exit /b 0
+
 :page_down
 if %page% gtr 0 ( set /a page=%page%-1 )
 call :print_changelog
 exit /b 0
+
 :page_up
 if %page% lss %pages% ( set /a page=%page%+1 )
 call :print_changelog
 exit /b 0
+
 :print_changelog
 cls
 echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -91,3 +94,4 @@ echo page %page%/%pages%
 echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 type %cdir%\changelog\changelog%page%.txt
 exit /b 0
+
