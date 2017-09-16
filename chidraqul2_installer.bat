@@ -39,6 +39,7 @@ echo Installing chidraqul2 the batch console game
 echo =====================================
 call :create_world2
 call :create_world3
+call :create_inf_world2
 call :create_game
 echo chidraqul2 succsessfully installed.
 echo =====================================
@@ -111,7 +112,9 @@ echo pause ^>nul
 exit /b 0
 
 :create_world2
+if not exist "%cdir%\chidraqul2_world2.bat" (
 echo creating world2 file...
+) else ( echo reinstalling world2 file... )
 (
 echo @echo off
 echo setlocal EnableDelayedExpansion
@@ -396,7 +399,9 @@ echo ^)
 exit /b 0
 
 :create_world3
+if not exist "%cdir%\chidraqul2_world3.bat" (
 echo creating world3 file...
+) else ( echo reinstalling world3 file... )
 (
 echo @echo off
 echo setlocal EnableDelayedExpansion
@@ -687,4 +692,336 @@ echo @echo %%skin%%
 echo ^)  
 
 ) >%cdir%\chidraqul2_world3.bat
+exit /b 0
+
+
+:create_inf_world2
+if not exist "%cdir%\chidraqul2_inf_world2.bat" (
+echo creating inf_world2 file...
+) else ( echo reinstalling inf_world2 file... )
+(
+echo @echo off
+echo setlocal EnableDelayedExpansion
+echo color 07
+echo set "msg=:"
+echo set is_multiplayer=false
+echo set world_length=20
+echo set count=0
+echo set pos=0
+echo set posY=0
+echo set pos2=0
+echo set full_hp=1
+echo set hp=1
+echo set hp2=1
+echo set skin=#
+echo set skin2=O
+echo set gold=0
+echo set i=0
+echo set hp_price=10
+echo set has_skin_at=0
+echo set render_dist=5
+echo set /a goldpos=%%random%% %%%%10 + 1
+echo set /a goldposY=%%random%% %%%%2
+echo set changelog_page=0
+echo set changelog_pages=2
+echo :changelog
+echo cls
+echo echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo echo          CHIDRAQUL2
+echo echo            v.0.0.5
+echo echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo echo 'w' and  's' to change page 'e' start
+echo echo page %%changelog_page%%/%%changelog_pages%%
+echo echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo if %%changelog_page%%==0 ^(
+echo echo coming soon...
+echo ^) else if %%changelog_page%%==1 ^(
+echo echo v.0.0.5 alpha
+echo echo * improved changelog
+echo echo + added installer
+echo echo + added launcher
+echo echo + added new worlds
+echo ^) else if %%changelog_page%%==2 ^(
+echo echo v.0.0.1 alpha
+echo echo + added a changelog
+echo echo + added data save
+echo echo + added accounts
+echo ^) else ^(
+echo echo unknow page.
+echo ^)
+echo choice /c swqe /n ^>nul
+echo if %%errorlevel%%==1 set /a changelog_page+=1
+echo if %%errorlevel%%==2 set /a changelog_page-=1
+echo if %%errorlevel%%==3 goto account_login
+echo if %%errorlevel%%==4 goto account_login
+echo if %%changelog_page%% lss 0 set changelog_page=0
+echo if %%changelog_page%% gtr %%changelog_pages%% set changelog_page=%%changelog_pages%%
+echo goto changelog
+echo :account_login
+echo cls
+echo set /p chidraqul_account="Account name ^(One word without spaces^): "
+echo if not exist C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\accounts\%%chidraqul_account%%\user_data_int.txt goto no_saves_int
+echo for /f "tokens=*" %%%%x in ^(C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\accounts\%%chidraqul_account%%\user_data_int.txt^) do ^(
+echo 	set save_var_int[!count!]=%%%%x
+echo 	set /a count+=1
+echo ^)
+echo set /a pos=%%save_var_int[0]%%
+echo set /a gold=%%save_var_int[1]%%
+echo set /a full_hp=%%save_var_int[2]%%
+echo set /a hp=%%save_var_int[3]%%
+echo set /a has_skin_at=%%save_var_int[4]%%
+echo set /a count=0
+echo :no_saves_int
+echo if not exist C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\accounts\%%chidraqul_account%%\user_data_str.txt goto no_saves_str
+echo for /f "tokens=*" %%%%x in ^(C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\accounts\%%chidraqul_account%%\user_data_str.txt^) do ^(
+echo 	set save_var_str[!count!]=%%%%x
+echo 	set /a count+=1
+echo ^)
+echo set "skin=%%save_var_str[0]%%"
+echo :no_saves_str
+echo cls
+echo echo move with 'a' and 'd' save and exit with 'x'.
+echo echo use 't' to write commands.
+echo echo for more info use the 'info' command.
+echo pause ^> NUL
+echo :main
+echo call :save_data
+echo call :update_chunk
+echo set /a render_to=%%pos%%+%%render_dist%%-1
+echo set /a i=%%pos%%-%%render_dist%%
+echo :print_world
+echo if %%i%% gtr 0 ^(
+echo set "world=!world!!x[%%i%%]!"
+echo set /a i+=1
+echo ^) else ^(
+echo set "world=!world! "
+echo set /a i+=1
+echo ^)
+echo if not %%i%% gtr %%render_to%% goto print_world
+echo set /a i=0
+echo set /a i=%%pos%%-%%render_dist%%
+echo :print_world2
+echo if %%i%% gtr 0 ^(
+echo set "world2=!world2!!x2[%%i%%]!"
+echo set /a i+=1
+echo ^) else ^(
+echo set "world2=!world2! "
+echo set /a i+=1
+echo ^)
+echo if not %%i%% gtr %%render_to%% goto print_world2
+echo set /a i=0
+echo cls
+echo echo.
+echo echo.
+echo echo.
+echo echo.
+echo echo !world2!
+echo echo !world!
+echo set "world2="
+echo set "world="
+echo echo pos: %%pos%% gold: %%gold%%  hp: [%%hp%%/%%full_hp%%]
+echo echo %%msg%%
+echo echo iterations: %%loopi%%
+echo set /a debug_1=%%pos%%-%%render_dist%%-1
+echo set /a debug_2=%%pos%%+%%render_dist%%+1
+echo echo from index: %%pos%%-%%render_dist%%-1=%%debug_1%%
+echo echo to   index: %%pos%%+%%render_dist%%+1=%%debug_2%%
+echo if %%pos%%==%%goldpos%% if %%posY%%==%%goldposY%% goto gold_collect
+echo if %%pos%% gtr %%world_length%% set /a hp=%%hp%%-1
+echo if 0 gtr %%pos%% set /a hp=%%hp%%-1
+echo if 1 gtr %%hp%% goto die
+echo choice /c wasdxtkoh /n ^>nul
+echo if %%errorlevel%%==1 goto moveup
+echo if %%errorlevel%%==2 goto moveleft
+echo if %%errorlevel%%==3 goto movedown
+echo if %%errorlevel%%==4 goto moveright
+echo if %%errorlevel%%==5 goto quit
+echo if %%errorlevel%%==6 goto chat
+echo if %%errorlevel%%==7 goto die
+echo if %%errorlevel%%==8 goto options
+echo if %%errorlevel%%==9 goto hack
+echo :hack
+echo set /p world_length="world "
+echo call :create_world
+echo goto main
+echo :moveleft
+echo set /a pos=%%pos%%-1
+echo goto main
+echo :moveright
+echo set /a pos=%%pos%%+1
+echo goto main
+echo :moveup
+echo if %%posY%% lss 1 set /a posY=%%posY%%+1
+echo goto main
+echo :movedown
+echo if %%posY%% gtr 0 set /a posY=%%posY%%-1
+echo goto main
+echo :options
+echo set /p render_dist="RenderDistance: "
+echo goto main
+echo :chat
+echo set input=cmdlist
+echo set /p input=cmd:
+echo if %%input%%==info ^(
+echo echo ************************************
+echo echo Info. For more help try 'help'
+echo echo ************************************
+echo echo Game made by ChillerDragon.
+echo echo Support Donate Suggest at chillerdragon@gmail.com
+echo echo or contact me via skype: bloodwork131
+echo echo ************************************
+echo pause ^>nul
+echo ^) else if %%input%%==help ^(
+echo cls
+echo echo ************************************
+echo echo Help. For more info try 'info'
+echo echo ************************************
+echo echo         Movement:
+echo echo 'w','a','s' and 'd' to move
+echo echo         Other:
+echo echo 'o' options
+echo echo 'k' to kill
+echo echo 'x' to quit the game
+echo echo 't' to write cmds, to see all cmds try 'cmdlist'.
+echo echo ************************************
+echo pause ^>nul
+echo ^) else if %%input%%==cmdlist ^(
+echo echo ************************************
+echo echo           Commands:
+echo echo ************************************
+echo echo 'help' helps
+echo echo 'info' infos
+echo echo 'logout' logs out
+echo echo 'shop' buy stuff here
+echo echo ************************************
+echo pause
+echo ^) else if %%input%%==2p ^(
+echo 	echo No multiplayer available in this world
+echo 	pause ^>nul
+echo ^) else if %%input%%==skin_default ^(
+echo 	set skin=#
+echo ^) else if %%input%%==skin_@ ^(
+echo 	if %%has_skin_at%%==1 ^(
+echo 		set skin=@
+echo 	^) else ^(
+echo 		echo You don't have this skin.
+echo 		pause ^>nul
+echo 	^)
+echo ^) else if %%input%%==shop ^(
+echo 	goto shop
+echo ^) else if %%input%%==logout ^(
+echo 	goto account_login
+echo ^) else ^(
+echo 	echo unknown command try 'help'.
+echo 	pause ^>nul
+echo ^)
+echo goto main
+echo :die
+echo set /a hp=%%full_hp%%
+echo set /a pos=0
+echo goto main
+echo :gold_collect
+echo set /a gold=gold+1
+echo set /a goldpos=%%random%% %%%%%%world_length%% + 1
+echo set /a goldposY=%%random%% %%%%2
+echo goto main
+echo :shop
+echo cls
+echo if %%full_hp%% lss 10 ^(
+echo set /a hp_price=%%full_hp%%*10
+echo ^) else ^(
+echo set /a hp_price=%%full_hp%%*250
+echo ^)
+echo echo *********************************
+echo echo                    S H O P
+echo echo *********************************
+echo echo type the name of the item you want to buy.
+echo echo type 'q' to quit the shop
+echo echo === ITEMS === PRICE ===
+echo echo hp             %%hp_price%%
+echo echo skin_@         1000
+echo echo.
+echo set /p input=item:
+echo if %%input%%==hp ^(
+echo 	if %%full_hp%% lss 20 ^(
+echo 	if %%gold%% gtr %%hp_price%% ^(
+echo 		set /a full_hp=%%full_hp%%+1
+echo 		set /a gold=%%gold%%-%%hp_price%%
+echo 		echo you bought 1 hp
+echo 	^) else ^(
+echo 		echo you no money. you need %%hp_price%%
+echo 	^)
+echo 	^) else ^(
+echo 	echo You already have max health.
+echo 	^)
+echo pause ^>nul
+echo ^) else if %%input%%==skin_@ ^(
+echo 	if %%has_skin_at%%==1 ^(
+echo 		echo you already have this skin.
+echo 	^) else ^(
+echo 		if %%gold%% geq 1000 ^(
+echo 			set /a has_skin_at=1
+echo 			set /a gold=%%gold%%-1000
+echo 			echo You bought this skin: @
+echo 		^) else ^(
+echo 			echo You don't have enough money.
+echo 		^)
+echo 	^)
+echo pause ^>nul
+echo ^) else if %%input%%==q ^(
+echo goto main
+echo ^) else ^(
+echo echo unknow item.
+echo pause ^>nul
+echo ^)
+echo goto shop
+echo :quit
+echo call :save_data
+echo echo saving data...
+echo set quit_inp=yes
+echo set /p quit_inp="do you really want to quit the game? [yes/no]"
+echo if %%quit_inp%%==yes ^(
+echo 	goto save_data
+echo ^) else ^(
+echo 	goto main
+echo ^)
+echo :save_data
+echo if not exist "C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\accounts\%%chidraqul_account%%\" mkdir C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\accounts\%%chidraqul_account%%\
+echo ^> C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\accounts\%%chidraqul_account%%\user_data_int.txt ^(
+echo @echo %%pos%%
+echo @echo %%gold%%
+echo @echo %%full_hp%%
+echo @echo %%hp%%
+echo @echo %%has_skin_at%%
+echo ^)   
+echo ^> C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\accounts\%%chidraqul_account%%\user_data_str.txt ^(
+echo @echo %%skin%%
+echo ^)  
+echo exit /b 0
+echo :create_world
+echo echo creating world...
+echo set /a count=0
+echo for /l %%%%x in ^(1,1,%%world_length%%^) do ^(
+echo 	set x[!count!]=_
+echo 	set x2[!count!]=_
+echo 	set /a count+=1
+echo ^)
+echo set /a count=0
+echo exit /b 0
+echo :update_chunk
+echo set /a index=%%pos%%-%%render_dist%%-1
+echo set /a loopi=0
+echo :chunk_loop
+echo set /a loopi+=1
+echo set x[!index!]=_
+echo set x2[!index!]=_
+echo set /a index+=1
+echo if %%index%% lss %%pos%%+%%render_dist%%+1 ^(
+echo echo goto will be called; index=%%index%%; to=%%pos%%+%%render_dist%%+1
+echo goto chunk_loop
+echo ^)
+echo if %%posY%%==1 ^(set x2[!pos!]=%%skin%%^) else ^(set x[!pos!]=%%skin%%^)
+echo if %%goldposY%%==1 ^(set x2[!goldpos!]=$^) else ^(set x[!goldpos!]=$^)
+echo exit /b 0
+) > %cdir%\chidraqul2_inf_world2.bat
 exit /b 0
