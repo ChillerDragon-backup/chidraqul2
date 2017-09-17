@@ -1010,7 +1010,8 @@ set /a pages=-1
 
 set /a pages=%pages%+1
 (
-echo coming soon...
+echo v.0.0.6 alpha
+echo * fixed the border bug
 ) >%cdir%\changelog\changelog%pages%.txt
 
 set /a pages=%pages%+1

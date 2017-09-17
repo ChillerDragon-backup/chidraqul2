@@ -1,4 +1,0 @@
-v.0.0.1 alpha
-+ added a changelog
-+ added data save
-+ added accounts

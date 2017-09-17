@@ -1,5 +1,0 @@
-v.0.0.5 alpha
-* improved changelog
-+ added installer
-+ added launcher
-+ added new worlds
