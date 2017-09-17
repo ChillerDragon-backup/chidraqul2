@@ -22,7 +22,7 @@ set /a goldpos=%random% %%10 + 1
 set /a goldposY=%random% %%2
 :account_login
 cls
-set /p chidraqul_account="Account name ^(One word without spaces^): "
+set /p chidraqul_account=Account name (One word without spaces): 
 if not exist C:\Users\%USERNAME%\AppData\Roaming\chidraqul\chidraqul2\accounts\%chidraqul_account%\user_data_int.txt goto no_saves_int
 for /f "tokens=*" %%x in (C:\Users\%USERNAME%\AppData\Roaming\chidraqul\chidraqul2\accounts\%chidraqul_account%\user_data_int.txt) do (
 	set save_var_int[!count!]=%%x
@@ -53,23 +53,29 @@ call :update_chunk
 set /a render_to=%pos%+%render_dist%-1
 set /a i=%pos%-%render_dist%
 :print_world
-if %i% gtr 0 (
-set "world=!world!!x[%i%]!"
-set /a i+=1
+if %i% gtr %world_length% (
+	set "world=!world! "
+	set /a i+=1
+) else if %i% gtr 0 (
+	set "world=!world!!x[%i%]!"
+	set /a i+=1
 ) else (
-set "world=!world! "
-set /a i+=1
+	set "world=!world! "
+	set /a i+=1
 )
 if not %i% gtr %render_to% goto print_world
 set /a i=0
 set /a i=%pos%-%render_dist%
 :print_world2
-if %i% gtr 0 (
-set "world2=!world2!!x2[%i%]!"
-set /a i+=1
+if %i% gtr %world_length% (
+	set "world2=!world2! "
+	set /a i+=1
+) else if %i% gtr 0 (
+	set "world2=!world2!!x2[%i%]!"
+	set /a i+=1
 ) else (
-set "world2=!world2! "
-set /a i+=1
+	set "world2=!world2! "
+	set /a i+=1
 )
 if not %i% gtr %render_to% goto print_world2
 set /a i=0
@@ -84,11 +90,6 @@ set "world2="
 set "world="
 echo pos: %pos% gold: %gold%  hp: [%hp%/%full_hp%]
 echo %msg%
-echo iterations: %loopi%
-set /a debug_1=%pos%-%render_dist%-1
-set /a debug_2=%pos%+%render_dist%+1
-echo from index: %pos%-%render_dist%-1=%debug_1%
-echo to   index: %pos%+%render_dist%+1=%debug_2%
 if %pos%==%goldpos% if %posY%==%goldposY% goto gold_collect
 if %pos% gtr %world_length% set /a hp=%hp%-1
 if 0 gtr %pos% set /a hp=%hp%-1
@@ -279,10 +280,8 @@ set /a loopi+=1
 set x[!index!]=_
 set x2[!index!]=_
 set /a index+=1
-if %index% lss %pos%+%render_dist%+1 (
-echo goto will be called; index=%index%; to=%pos%+%render_dist%+1
-goto chunk_loop
-)
+set /a loop_len=%pos%+%render_dist%+1
+if %index% lss %loop_len% ( goto chunk_loop )
 if %posY%==1 (set x2[!pos!]=%skin%) else (set x[!pos!]=%skin%)
 if %goldposY%==1 (set x2[!goldpos!]=$) else (set x[!goldpos!]=$)
 exit /b 0

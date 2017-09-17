@@ -764,23 +764,29 @@ echo call :update_chunk
 echo set /a render_to=%%pos%%+%%render_dist%%-1
 echo set /a i=%%pos%%-%%render_dist%%
 echo :print_world
-echo if %%i%% gtr 0 ^(
-echo set "world=!world!!x[%%i%%]!"
-echo set /a i+=1
+echo if %%i%% gtr %%world_length%% ^(
+echo 	set "world=!world! "
+echo 	set /a i+=1
+echo ^) else if %%i%% gtr 0 ^(
+echo 	set "world=!world!!x[%%i%%]!"
+echo 	set /a i+=1
 echo ^) else ^(
-echo set "world=!world! "
-echo set /a i+=1
+echo 	set "world=!world! "
+echo 	set /a i+=1
 echo ^)
 echo if not %%i%% gtr %%render_to%% goto print_world
 echo set /a i=0
 echo set /a i=%%pos%%-%%render_dist%%
 echo :print_world2
-echo if %%i%% gtr 0 ^(
-echo set "world2=!world2!!x2[%%i%%]!"
-echo set /a i+=1
+echo if %%i%% gtr %%world_length%% ^(
+echo 	set "world2=!world2! "
+echo 	set /a i+=1
+echo ^) else if %%i%% gtr 0 ^(
+echo 	set "world2=!world2!!x2[%%i%%]!"
+echo 	set /a i+=1
 echo ^) else ^(
-echo set "world2=!world2! "
-echo set /a i+=1
+echo 	set "world2=!world2! "
+echo 	set /a i+=1
 echo ^)
 echo if not %%i%% gtr %%render_to%% goto print_world2
 echo set /a i=0
@@ -795,11 +801,6 @@ echo set "world2="
 echo set "world="
 echo echo pos: %%pos%% gold: %%gold%%  hp: [%%hp%%/%%full_hp%%]
 echo echo %%msg%%
-echo echo iterations: %%loopi%%
-echo set /a debug_1=%%pos%%-%%render_dist%%-1
-echo set /a debug_2=%%pos%%+%%render_dist%%+1
-echo echo from index: %%pos%%-%%render_dist%%-1=%%debug_1%%
-echo echo to   index: %%pos%%+%%render_dist%%+1=%%debug_2%%
 echo if %%pos%%==%%goldpos%% if %%posY%%==%%goldposY%% goto gold_collect
 echo if %%pos%% gtr %%world_length%% set /a hp=%%hp%%-1
 echo if 0 gtr %%pos%% set /a hp=%%hp%%-1
@@ -990,13 +991,12 @@ echo set /a loopi+=1
 echo set x[!index!]=_
 echo set x2[!index!]=_
 echo set /a index+=1
-echo if %%index%% lss %%pos%%+%%render_dist%%+1 ^(
-echo echo goto will be called; index=%%index%%; to=%%pos%%+%%render_dist%%+1
-echo goto chunk_loop
-echo ^)
+echo set /a loop_len=%%pos%%+%%render_dist%%+1
+echo if %%index%% lss %%loop_len%% ^( goto chunk_loop ^)
 echo if %%posY%%==1 ^(set x2[!pos!]=%%skin%%^) else ^(set x[!pos!]=%%skin%%^)
 echo if %%goldposY%%==1 ^(set x2[!goldpos!]=$^) else ^(set x[!goldpos!]=$^)
 echo exit /b 0
+
 ) > %cdir%\chidraqul2_inf_world2.bat
 exit /b 0
 
