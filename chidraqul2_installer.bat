@@ -41,6 +41,7 @@ call :create_world2
 call :create_world3
 call :create_inf_world2
 call :create_game
+call :create_changelog
 echo chidraqul2 succsessfully installed.
 echo =====================================
 echo press any key to quit the installer
@@ -1002,3 +1003,52 @@ echo if %%goldposY%%==1 ^(set x2[!goldpos!]=$^) else ^(set x[!goldpos!]=$^)
 echo exit /b 0
 ) > %cdir%\chidraqul2_inf_world2.bat
 exit /b 0
+
+:create_changelog
+if not exist "%cdir%\changelog\" (
+echo creating changelog folder...
+mkdir %cdir%\changelog
+) else ( echo reinstalling changelog folder... )
+
+set /a pages=-1
+
+set /a pages=%pages%+1
+(
+echo coming soon...
+) >%cdir%\changelog\changelog%pages%.txt
+
+set /a pages=%pages%+1
+(
+echo v.0.0.5 alpha
+echo * improved changelog
+echo + added installer
+echo + added launcher
+echo + added new worlds
+) >%cdir%\changelog\changelog%pages%.txt
+
+set /a pages=%pages%+1
+(
+echo v.0.0.1 alpha
+echo + added a changelog
+echo + added data save
+echo + added accounts
+) >%cdir%\changelog\changelog%pages%.txt
+
+(
+echo %pages%
+) > %cdir%\changelog\changelog_size.txt
+exit /b 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
