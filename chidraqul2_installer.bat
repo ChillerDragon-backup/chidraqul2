@@ -160,7 +160,8 @@ echo setlocal EnableDelayedExpansion
 echo color 07
 echo set "msg=:"
 echo set is_multiplayer=false
-echo set world_length=40
+echo set /a world_length=40
+echo set /a world_len=%%world_length%%-1
 echo set count=0
 echo set pos=0
 echo set posY=0
@@ -176,7 +177,7 @@ echo set hp_price=10
 echo set has_skin_at=0
 echo set /a goldpos=%%random%% %%%%10 + 1
 echo :account_login
-echo set /p chidraqul_account="Account name ^(One word without spaces^): "
+echo set /p chidraqul_account="Account name ^^^(One word without spaces^^^): "
 echo if not exist C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\accounts\%%chidraqul_account%%\user_data_int.txt goto no_saves_int
 echo for /f "tokens=*" %%%%x in ^(C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\accounts\%%chidraqul_account%%\user_data_int.txt^) do ^(
 echo 	set save_var_int[!count!]=%%%%x
@@ -196,6 +197,7 @@ echo 	set /a count+=1
 echo ^)
 echo set "skin=%%save_var_str[0]%%"
 echo :no_saves_str
+echo set /a count=0
 echo cls
 echo echo move with 'a' and 'd' save and exit with 'x'.
 echo echo use 't' to write commands.
@@ -216,16 +218,12 @@ echo if %%is_multiplayer%%==true set x[!pos2!]=%%skin2%%
 echo :create_world
 echo set "world=!world!!x[%%count%%]!
 echo set /a count+=1
-echo set /a i+=1
-echo if not %%i%% gtr %%world_length%% goto create_world
-echo set /a i=0
+echo if not %%count%% gtr %%world_len%% goto create_world
 echo set /a count=0
 echo :create_world2
 echo set "world2=!world2!!x2[%%count%%]!
 echo set /a count+=1
-echo set /a i+=1
-echo if not %%i%% gtr %%world_length%% goto create_world2
-echo set /a i=0
+echo if not %%count%% gtr %%world_len%% goto create_world2
 echo set /a count=0
 echo echo.
 echo echo.
@@ -244,9 +242,9 @@ echo echo %%msg%%
 echo ^)
 echo if %%pos%%==%%goldpos%% goto gold_collect
 echo if %%pos2%%==%%goldpos%% goto gold_collect
-echo if %%pos%% gtr %%world_length%% set /a hp=%%hp%%-1
+echo if %%pos%% gtr %%world_len%% set /a hp=%%hp%%-1
 echo if 0 gtr %%pos%% set /a hp=%%hp%%-1
-echo if %%pos2%% gtr %%world_length%% set /a pos2=0
+echo if %%pos2%% gtr %%world_len%% set /a pos2=0
 echo if 0 gtr %%pos2%% set /a pos2=0
 echo if 1 gtr %%hp%% goto die
 echo choice /c wasdxtknmoh /n ^>nul
@@ -285,6 +283,7 @@ echo if %%posY%% gtr 0 set /a posY=%%posY%%-1
 echo goto main
 echo :options
 echo set /p world_length="WorldSize: "
+echo set /a world_len=%%world_length%%-1
 echo goto main
 echo :chat
 echo set /p input=cmd:
@@ -434,7 +433,8 @@ echo setlocal EnableDelayedExpansion
 echo color 07
 echo set "msg=:"
 echo set is_multiplayer=false
-echo set world_length=40
+echo set /a world_length=40
+echo set /a world_len=%%world_length%%-1
 echo set count=0
 echo set pos=0
 echo set posY=0
@@ -450,7 +450,7 @@ echo set hp_price=10
 echo set has_skin_at=0
 echo set /a goldpos=%%random%% %%%%10 + 1
 echo :account_login
-echo set /p chidraqul_account="Account name ^(One word without spaces^): "
+echo set /p chidraqul_account="Account name ^^^(One word without spaces^^^): "
 echo if not exist C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\accounts\%%chidraqul_account%%\user_data_int.txt goto no_saves_int
 echo for /f "tokens=*" %%%%x in ^(C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\accounts\%%chidraqul_account%%\user_data_int.txt^) do ^(
 echo 	set save_var_int[!count!]=%%%%x
@@ -470,6 +470,7 @@ echo 	set /a count+=1
 echo ^)
 echo set "skin=%%save_var_str[0]%%"
 echo :no_saves_str
+echo set /a count=0
 echo cls
 echo echo move with 'a' and 'd' save and exit with 'x'.
 echo echo use 't' to write commands.
@@ -491,23 +492,17 @@ echo if %%is_multiplayer%%==true set x[!pos2!]=%%skin2%%
 echo :create_world
 echo set "world=!world!!x[%%count%%]!
 echo set /a count+=1
-echo set /a i+=1
-echo if not %%i%% gtr %%world_length%% goto create_world
-echo set /a i=0
+echo if not %%count%% gtr %%world_len%% goto create_world
 echo set /a count=0
 echo :create_world2
 echo set "world2=!world2!!x2[%%count%%]!
 echo set /a count+=1
-echo set /a i+=1
-echo if not %%i%% gtr %%world_length%% goto create_world2
-echo set /a i=0
+echo if not %%count%% gtr %%world_len%% goto create_world2
 echo set /a count=0
 echo :create_world3
 echo set "world3=!world3!!x3[%%count%%]!
 echo set /a count+=1
-echo set /a i+=1
-echo if not %%i%% gtr %%world_length%% goto create_world3
-echo set /a i=0
+echo if not %%count%% gtr %%world_len%% goto create_world3
 echo set /a count=0
 echo echo.
 echo echo.
@@ -527,9 +522,9 @@ echo echo %%msg%%
 echo ^)
 echo if %%pos%%==%%goldpos%% goto gold_collect
 echo if %%pos2%%==%%goldpos%% goto gold_collect
-echo if %%pos%% gtr %%world_length%% set /a hp=%%hp%%-1
+echo if %%pos%% gtr %%world_len%% set /a hp=%%hp%%-1
 echo if 0 gtr %%pos%% set /a hp=%%hp%%-1
-echo if %%pos2%% gtr %%world_length%% set /a pos2=0
+echo if %%pos2%% gtr %%world_len%% set /a pos2=0
 echo if 0 gtr %%pos2%% set /a pos2=0
 echo if 1 gtr %%hp%% goto die
 echo choice /c wasdxtknmoh /n ^>nul
@@ -568,6 +563,7 @@ echo if %%posY%% gtr 0 set /a posY=%%posY%%-1
 echo goto main
 echo :options
 echo set /p world_length="WorldSize: "
+echo set /a world_len=%%world_length%%-1
 echo goto main
 echo :chat
 echo set /p input=cmd:
