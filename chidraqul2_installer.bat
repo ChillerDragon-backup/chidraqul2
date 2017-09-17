@@ -177,7 +177,7 @@ echo set hp_price=10
 echo set has_skin_at=0
 echo set /a goldpos=%%random%% %%%%10 + 1
 echo :account_login
-echo set /p chidraqul_account="Account name ^^^(One word without spaces^^^): "
+echo set /p chidraqul_account=Account name ^(One word without spaces^): 
 echo if not exist C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\accounts\%%chidraqul_account%%\user_data_int.txt goto no_saves_int
 echo for /f "tokens=*" %%%%x in ^(C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\accounts\%%chidraqul_account%%\user_data_int.txt^) do ^(
 echo 	set save_var_int[!count!]=%%%%x
@@ -450,7 +450,7 @@ echo set hp_price=10
 echo set has_skin_at=0
 echo set /a goldpos=%%random%% %%%%10 + 1
 echo :account_login
-echo set /p chidraqul_account="Account name ^^^(One word without spaces^^^): "
+echo set /p chidraqul_account=Account name ^(One word without spaces^): 
 echo if not exist C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\accounts\%%chidraqul_account%%\user_data_int.txt goto no_saves_int
 echo for /f "tokens=*" %%%%x in ^(C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\accounts\%%chidraqul_account%%\user_data_int.txt^) do ^(
 echo 	set save_var_int[!count!]=%%%%x
@@ -733,7 +733,7 @@ echo set /a goldpos=%%random%% %%%%10 + 1
 echo set /a goldposY=%%random%% %%%%2
 echo :account_login
 echo cls
-echo set /p chidraqul_account="Account name ^(One word without spaces^): "
+echo set /p chidraqul_account=Account name ^(One word without spaces^): 
 echo if not exist C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\accounts\%%chidraqul_account%%\user_data_int.txt goto no_saves_int
 echo for /f "tokens=*" %%%%x in ^(C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\accounts\%%chidraqul_account%%\user_data_int.txt^) do ^(
 echo 	set save_var_int[!count!]=%%%%x
