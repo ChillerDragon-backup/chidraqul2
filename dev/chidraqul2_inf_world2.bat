@@ -20,6 +20,8 @@ set has_skin_at=0
 set render_dist=5
 set /a goldpos=%random% %%10 + 1
 set /a goldposY=%random% %%2
+set /a spikeposX=%random% %%10 + 1
+set /a spikeposY=%random% %%2
 :account_login
 cls
 set /p chidraqul_account=Account name (One word without spaces): 
@@ -90,7 +92,8 @@ set "world2="
 set "world="
 echo pos: %pos% gold: %gold%  hp: [%hp%/%full_hp%]
 echo %msg%
-if %pos%==%goldpos% if %posY%==%goldposY% goto gold_collect
+if %pos%==%goldpos% if %posY%==%goldposY% call :gold_collect
+if %pos%==%spikeposX% if %posY%==%spikeposY% call :hit_spike
 if %pos% gtr %world_length% set /a hp=%hp%-1
 if 0 gtr %pos% set /a hp=%hp%-1
 if 1 gtr %hp% goto die
@@ -188,7 +191,13 @@ goto main
 set /a gold=gold+1
 set /a goldpos=%random% %%%world_length% + 1
 set /a goldposY=%random% %%2
-goto main
+exit /b 0
+:hit_spike
+set /a hp=%hp%-1
+set /a spikeposX=%random% %%%world_length% + 1
+set /a spikeposY=%random% %%2
+if %spikeposX%==%goldpos% set /a spikeposX=%spikeposX%+1
+exit /b 0
 :shop
 cls
 if %full_hp% lss 10 (
@@ -284,4 +293,5 @@ set /a loop_len=%pos%+%render_dist%+1
 if %index% lss %loop_len% ( goto chunk_loop )
 if %posY%==1 (set x2[!pos!]=%skin%) else (set x[!pos!]=%skin%)
 if %goldposY%==1 (set x2[!goldpos!]=$) else (set x[!goldpos!]=$)
+if %spikeposY%==1 (set x2[!spikeposX!]=x) else (set x[!spikeposX!]=x)
 exit /b 0
