@@ -31,37 +31,56 @@ if %errorlevel%==4 goto main
 goto changelog
 :main
 cls
-if %select_world%==2 (
+if %select_world%==1 (
 echo use the keys 'w' and 's' to select
 echo press 'e' to start
 echo.
+echo ^>inf_world2^<
+echo  world2
+echo  world3
+) else if %select_world%==2 (
+echo use the keys 'w' and 's' to select
+echo press 'e' to start
 echo.
+echo  inf_world2
 echo ^>world2^<
 echo  world3
-) else (
+) else if %select_world%==3 (
 echo use the keys 'w' and 's' to select
 echo press 'e' to start
 echo.
-echo.
+echo  inf_world2
 echo  world2
 echo ^>world3^<
 )
 choice /c wseq /n >nul
-if %errorlevel%==1 set select_world=2
-if %errorlevel%==2 set select_world=3
+if %errorlevel%==1 call :option_up
+if %errorlevel%==2 call :option_down
 if %errorlevel%==3 goto start
 if %errorlevel%==4 exit
 goto main
+exit /b 0
+:option_up
+if %select_world% gtr 1 ( set /a select_world=%select_world%-1)
+exit /b 0
+:option_down
+if %select_world% lss 3 ( set /a select_world=%select_world%+1)
 exit /b 0
 :start
 if %select_world%==2 (
 cls
 call C:\Users\%USERNAME%\AppData\Roaming\chidraqul\chidraqul2\chidraqul2_world2.bat
 exit
-) else (
+) else if %select_world%==3 (
 cls
 call C:\Users\%USERNAME%\AppData\Roaming\chidraqul\chidraqul2\chidraqul2_world3.bat
 exit
+) else if %select_world%==1 (
+cls
+call C:\Users\%USERNAME%\AppData\Roaming\chidraqul\chidraqul2\chidraqul2_inf_world2.bat
+exit
+) else (
+echo something went wrong
 )
 exit /b 0
 :failed

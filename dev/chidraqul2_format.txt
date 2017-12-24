@@ -1,0 +1,112 @@
+echo @echo off
+echo set select_world=2
+echo set cdir="C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2"
+echo if not exist "%%cdir%%" ^(
+echo echo Error opening chidraqul2 directory
+echo goto failed 
+echo ^)
+echo if not exist "%%cdir%%\chidraqul2_world2.bat" ^(
+echo echo Error opening chidraqul2_world2
+echo goto failed 
+echo ^)
+echo if not exist "%%cdir%%\chidraqul2_world3.bat" ^(
+echo echo Error opening chidraqul2_world3
+echo goto failed 
+echo ^)
+echo if not exist "%%cdir%%\changelog\changelog_size.txt" ^(
+echo echo Error loading changelog size
+echo echo press any key to continue to main menu
+echo pause ^>nul
+echo goto main
+echo ^)
+echo set /p pages=^<%%cdir%%\changelog\changelog_size.txt
+echo set /a page=0
+echo call :print_changelog
+echo :changelog
+echo choice /c wseq /n ^>nul
+echo if %%errorlevel%%==1 call :page_up
+echo if %%errorlevel%%==2 call :page_down
+echo if %%errorlevel%%==3 goto main
+echo if %%errorlevel%%==4 goto main
+echo goto changelog
+echo :main
+echo cls
+echo if %%select_world%%==1 ^(
+echo echo use the keys 'w' and 's' to select
+echo echo press 'e' to start
+echo echo.
+echo echo ^^^>inf_world2^^^<
+echo echo  world2
+echo echo  world3
+echo ^) else if %%select_world%%==2 ^(
+echo echo use the keys 'w' and 's' to select
+echo echo press 'e' to start
+echo echo.
+echo echo  inf_world2
+echo echo ^^^>world2^^^<
+echo echo  world3
+echo ^) else if %%select_world%%==3 ^(
+echo echo use the keys 'w' and 's' to select
+echo echo press 'e' to start
+echo echo.
+echo echo  inf_world2
+echo echo  world2
+echo echo ^^^>world3^^^<
+echo ^)
+echo choice /c wseq /n ^>nul
+echo if %%errorlevel%%==1 call :option_up
+echo if %%errorlevel%%==2 call :option_down
+echo if %%errorlevel%%==3 goto start
+echo if %%errorlevel%%==4 exit
+echo goto main
+echo exit /b 0
+echo :option_up
+echo if %%select_world%% gtr 1 ^( set /a select_world=%%select_world%%-1^)
+echo exit /b 0
+echo :option_down
+echo if %%select_world%% lss 3 ^( set /a select_world=%%select_world%%+1^)
+echo exit /b 0
+echo :start
+echo if %%select_world%%==2 ^(
+echo cls
+echo call C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\chidraqul2_world2.bat
+echo exit
+echo ^) else if %%select_world%%==3 ^(
+echo cls
+echo call C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\chidraqul2_world3.bat
+echo exit
+echo ^) else if %%select_world%%==1 ^(
+echo cls
+echo call C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\chidraqul2_inf_world2.bat
+echo exit
+echo ^) else ^(
+echo echo something went wrong
+echo ^)
+echo exit /b 0
+echo :failed
+echo echo ################################
+echo echo Failed loading chidraqul2.
+echo echo Need help? Contact the dev on:
+echo echo skype: BloodWork131
+echo echo mail: chillerdragon@gmail.com
+echo echo ################################
+echo pause ^>nul
+echo exit /b 0
+echo :page_down
+echo if %%page%% gtr 0 ^( set /a page=%%page%%-1 ^)
+echo call :print_changelog
+echo exit /b 0
+echo :page_up
+echo if %%page%% lss %%pages%% ^( set /a page=%%page%%+1 ^)
+echo call :print_changelog
+echo exit /b 0
+echo :print_changelog
+echo cls
+echo echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo echo          CHIDRAQUL2
+echo echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo echo 'w' and 's' to change page 'e' start
+echo echo page %%page%%/%%pages%%
+echo echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+echo type %%cdir%%\changelog\changelog%%page%%.txt
+echo exit /b 0

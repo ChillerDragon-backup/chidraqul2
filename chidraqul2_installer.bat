@@ -86,37 +86,56 @@ echo if %%errorlevel%%==4 goto main
 echo goto changelog
 echo :main
 echo cls
-echo if %%select_world%%==2 ^(
+echo if %%select_world%%==1 ^(
 echo echo use the keys 'w' and 's' to select
 echo echo press 'e' to start
 echo echo.
+echo echo ^^^>inf_world2^^^<
+echo echo  world2
+echo echo  world3
+echo ^) else if %%select_world%%==2 ^(
+echo echo use the keys 'w' and 's' to select
+echo echo press 'e' to start
 echo echo.
+echo echo  inf_world2
 echo echo ^^^>world2^^^<
 echo echo  world3
-echo ^) else ^(
+echo ^) else if %%select_world%%==3 ^(
 echo echo use the keys 'w' and 's' to select
 echo echo press 'e' to start
 echo echo.
-echo echo.
+echo echo  inf_world2
 echo echo  world2
 echo echo ^^^>world3^^^<
 echo ^)
 echo choice /c wseq /n ^>nul
-echo if %%errorlevel%%==1 set select_world=2
-echo if %%errorlevel%%==2 set select_world=3
+echo if %%errorlevel%%==1 call :option_up
+echo if %%errorlevel%%==2 call :option_down
 echo if %%errorlevel%%==3 goto start
 echo if %%errorlevel%%==4 exit
 echo goto main
+echo exit /b 0
+echo :option_up
+echo if %%select_world%% gtr 1 ^( set /a select_world=%%select_world%%-1^)
+echo exit /b 0
+echo :option_down
+echo if %%select_world%% lss 3 ^( set /a select_world=%%select_world%%+1^)
 echo exit /b 0
 echo :start
 echo if %%select_world%%==2 ^(
 echo cls
 echo call C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\chidraqul2_world2.bat
 echo exit
-echo ^) else ^(
+echo ^) else if %%select_world%%==3 ^(
 echo cls
 echo call C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\chidraqul2_world3.bat
 echo exit
+echo ^) else if %%select_world%%==1 ^(
+echo cls
+echo call C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\chidraqul2_inf_world2.bat
+echo exit
+echo ^) else ^(
+echo echo something went wrong
 echo ^)
 echo exit /b 0
 echo :failed
