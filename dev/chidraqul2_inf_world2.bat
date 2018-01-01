@@ -22,6 +22,7 @@ set /a goldpos=%random% %%10 + 1
 set /a goldposY=%random% %%2
 set /a spikeposX=%random% %%10 + 1
 set /a spikeposY=%random% %%2
+call C:\Users\%USERNAME%\AppData\Roaming\chidraqul\chidraqul2\bin\load_settings.bat
 :account_login
 cls
 set /p chidraqul_account=Account name (One word without spaces): 
@@ -249,8 +250,9 @@ pause >nul
 )
 goto shop
 :quit
-call :save_data
 echo saving data...
+call :save_data
+call C:\Users\%USERNAME%\AppData\Roaming\chidraqul\chidraqul2\bin\save_settings.bat
 set quit_inp=yes
 set /p quit_inp="do you really want to quit the game? [yes/no]"
 if %quit_inp%==yes (

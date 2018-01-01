@@ -1,4 +1,5 @@
 @echo off
+color 07
 set select_world=2
 set cdir="C:\Users\%USERNAME%\AppData\Roaming\chidraqul\chidraqul2"
 if not exist "%cdir%" (

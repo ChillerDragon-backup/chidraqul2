@@ -1,12 +1,14 @@
 @echo off
+color 07
 
 ::Install telnet client (needed for updates)
 ::echo Installing TelnetClient...
 ::pkgmgr /iu:"TelnetClient"
 
 
-::setting chidraqul2 directory path
+::setting chidraqul2 PATHS
 set cdir="C:\Users\%USERNAME%\AppData\Roaming\chidraqul\chidraqul2"
+set cbin="C:\Users\%USERNAME%\AppData\Roaming\chidraqul\chidraqul2\bin"
 
 ::Check if installed already
 if not exist "%cdir%" ( 
@@ -37,15 +39,65 @@ exit /b 0
 cls
 echo Installing chidraqul2 the batch console game
 echo =====================================
+call :create_bin
 call :create_world2
 call :create_world3
 call :create_inf_world2
 call :create_game
 call :create_changelog
+call :create_save_settings
+call :create_load_settings
 echo chidraqul2 succsessfully installed.
 echo =====================================
 echo press any key to quit the installer
 pause >nul
+exit /b 0
+
+:create_bin
+if not exist %cbin% (
+echo creating bin directory...
+mkdir %cbin%
+)
+exit /b 0
+
+:create_save_settings
+if not exist "%cbin%\save_settings.bat" (
+echo creating save_settings file...
+) else ( echo reinstalling save_settings file... )
+(
+echo @echo off
+echo if not exist "C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\" mkdir C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\
+echo ^> C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\settings.cfg ^(
+echo @echo %%render_dist%%
+echo @echo %%world_length%%
+echo ^)  
+) >%cbin%\save_settings.bat
+exit /b 0
+
+:create_load_settings
+if not exist "%cbin%\load_settings.bat" (
+echo creating load_settings file...
+) else ( echo reinstalling load_settings file... )
+(
+echo @echo off
+echo set /a count=0
+echo set render_dist=5
+echo set world_length=20
+echo if not exist C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\settings.cfg goto fail
+echo for /f "tokens=*" %%%%x in ^(C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\settings.cfg^) do ^(
+echo 	set save_var_int[!count!]=%%%%x
+echo 	set /a count+=1
+echo ^)
+echo set /a render_dist=%%save_var_int[0]%%
+echo set /a world_length=%%save_var_int[1]%%
+echo set /a count=0
+echo goto success
+echo :fail
+echo echo failed to load settings.
+echo exit /b 0
+echo :success
+echo echo successfully loaded settings
+) >%cbin%\load_settings.bat
 exit /b 0
 
 :create_game
@@ -54,6 +106,7 @@ echo creating game file...
 ) else ( echo reinstalling game file... )
 (
 echo @echo off
+echo color 07
 echo set select_world=2
 echo set cdir="C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2"
 echo if not exist "%%cdir%%" ^(
@@ -752,6 +805,7 @@ echo set /a goldpos=%%random%% %%%%10 + 1
 echo set /a goldposY=%%random%% %%%%2
 echo set /a spikeposX=%%random%% %%%%10 + 1
 echo set /a spikeposY=%%random%% %%%%2
+echo call C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\bin\load_settings.bat
 echo :account_login
 echo cls
 echo set /p chidraqul_account=Account name ^(One word without spaces^): 
@@ -979,8 +1033,9 @@ echo pause ^>nul
 echo ^)
 echo goto shop
 echo :quit
-echo call :save_data
 echo echo saving data...
+echo call :save_data
+echo call C:\Users\%%USERNAME%%\AppData\Roaming\chidraqul\chidraqul2\bin\save_settings.bat
 echo set quit_inp=yes
 echo set /p quit_inp="do you really want to quit the game? [yes/no]"
 echo if %%quit_inp%%==yes ^(
@@ -1025,6 +1080,7 @@ echo if %%posY%%==1 ^(set x2[!pos!]=%%skin%%^) else ^(set x[!pos!]=%%skin%%^)
 echo if %%goldposY%%==1 ^(set x2[!goldpos!]=$^) else ^(set x[!goldpos!]=$^)
 echo if %%spikeposY%%==1 ^(set x2[!spikeposX!]=x^) else ^(set x[!spikeposX!]=x^)
 echo exit /b 0
+
 ) > %cdir%\chidraqul2_inf_world2.bat
 exit /b 0
 
