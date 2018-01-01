@@ -128,7 +128,7 @@ echo pause ^>nul
 echo goto main
 echo ^)
 echo set /p pages=^<%%cdir%%\changelog\changelog_size.txt
-echo set /a page=0
+echo set /a page=%%pages%%
 echo call :print_changelog
 echo :changelog
 echo choice /c wseq /n ^>nul
@@ -1094,8 +1094,10 @@ set /a pages=-1
 
 set /a pages=%pages%+1
 (
-echo v.0.0.6 alpha
-echo * fixed the border bug
+echo v.0.0.1 alpha
+echo + added a changelog
+echo + added data save
+echo + added accounts
 ) >%cdir%\changelog\changelog%pages%.txt
 
 set /a pages=%pages%+1
@@ -1109,10 +1111,9 @@ echo + added new worlds
 
 set /a pages=%pages%+1
 (
-echo v.0.0.1 alpha
-echo + added a changelog
-echo + added data save
-echo + added accounts
+echo v.0.0.6 alpha
+echo * fixed the border bug
+echo + added damage spikes (x)
 ) >%cdir%\changelog\changelog%pages%.txt
 
 (

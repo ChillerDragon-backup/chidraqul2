@@ -21,7 +21,7 @@ pause >nul
 goto main
 )
 set /p pages=<%cdir%\changelog\changelog_size.txt
-set /a page=0
+set /a page=%pages%
 call :print_changelog
 :changelog
 choice /c wseq /n >nul
