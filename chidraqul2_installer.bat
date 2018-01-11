@@ -1113,7 +1113,7 @@ set /a pages=%pages%+1
 (
 echo v.0.0.6 alpha
 echo * fixed the border bug
-echo + added damage spikes (x)
+echo + added damage spikes (x^)
 ) >%cdir%\changelog\changelog%pages%.txt
 
 (
